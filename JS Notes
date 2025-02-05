@@ -574,3 +574,38 @@ var c=new Array();  //c is empty array
 - We also have a class for strings.
 eg. var s=new String("Hello world.");
 console.log(s);     //[String: "Hello world."]
+- We also have a date class, in which the following methods are present:
+eg. var d=new Date();
+d.getFullYear();    //get year eg.2025
+d.getMonth();    //get month no. (0-11 for Jan-Dec)
+d.getDate();    //get date (1-31)
+d.getDay();    //get day (0-6 for Sun-Sat)
+d.getHours();    //get hours (0-23)
+d.getMinutes();    //get mins (0-59)
+d.getSeconds();    //get secs (0-589)
+d.getMilliseconds();    //get ms (0-999)
+d.getTime();    //get ms since 1970
+d.getTimezoneOffset();    //get timezone difference in min from UTC*/
+
+
+/*MULTITASKING IN JS
+- JS is single-threaded i.e. can execute only one task at a certain time.
+- By default we have synchronous execution aka code runs line by line and next line doesn't run until previous line finishes.
+- Asynchronous execution is where longer tasks are executed in the back and subsequent lines of code continue executing.
+- Callback function is a way to pass function as an argument to another function.
+eg. namegreet(name, callback){
+    console.log("Hello", name);
+    callback();
+}
+greet(){
+    console.log("Greetings to you.");
+}
+namegreet("Rahul", greet);
+- setTimeout() schedules a function to run after a delay of specified milliseconds. We specify function to be executed, delay in milliseconds, then any parameters that have to be given to function.
+- Syntax -> setTimeout(function, delay (in ms), param1, param2...);
+eg. console.log("Start");
+setTimeout(()=>{
+    console.log("Task with delay");
+}, 2000);
+console.log("End");
+- 
