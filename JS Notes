@@ -592,6 +592,8 @@ d.getTimezoneOffset();    //get timezone difference in min from UTC*/
 - JS is single-threaded i.e. can execute only one task at a certain time.
 - By default we have synchronous execution aka code runs line by line and next line doesn't run until previous line finishes.
 - Asynchronous execution is where longer tasks are executed in the back and subsequent lines of code continue executing.
+
+CALLBACK
 - Callback function is a way to pass function as an argument to another function.
 eg. namegreet(name, callback){
     console.log("Hello", name);
@@ -601,6 +603,8 @@ greet(){
     console.log("Greetings to you.");
 }
 namegreet("Rahul", greet);
+
+SETTIMEOUT
 - setTimeout() schedules a function to run after a delay of specified milliseconds. We specify function to be executed, delay in milliseconds, then any parameters that have to be given to function.
 - Syntax -> setTimeout(function, delay (in ms), param1, param2...);
 eg. console.log("Start");
@@ -608,4 +612,17 @@ setTimeout(()=>{
     console.log("Task with delay");
 }, 2000);
 console.log("End");
-- 
+//prints Start, then End, then Task with delay
+
+SETINTERVAL
+- setInterval() executes any function repeatedly at regular intervals.
+- Syntax -> setInterval(callback, interval (in ms));
+eg. var count=1;
+setInterval(()=>{
+    console.log(count);
+    ++count;
+}, 1000);
+//Prints incremented numbers every second
+
+CLEARINTERVAL
+- clearInterval() is used to stop setInterval()
