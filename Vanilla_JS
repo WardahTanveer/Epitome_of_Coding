@@ -502,7 +502,7 @@ CHILDREM OF AN ELEMENT
 - Children of a tag are its nested tags. Directly nested nodes are called child nodes and deeply (indirectly) nested children are called descendant nodes
 */
 
-/*EXPLORING JS ADVANCED CONCEPT
+/*EXPLORING JS ADVANCED CONCEPTS
 
 CLASS VS OBJECT
 - Class represents any type of data.
@@ -575,7 +575,7 @@ var c=new Array();  //c is empty array
 eg. var s=new String("Hello world.");
 console.log(s);     //[String: "Hello world."]
 - We also have a date class, in which the following methods are present:
-eg. var d=new Date();
+eg. var d=new Date();    //gets current time instance info stored in d.
 d.getFullYear();    //get year eg.2025
 d.getMonth();    //get month no. (0-11 for Jan-Dec)
 d.getDate();    //get date (1-31)
@@ -596,33 +596,289 @@ d.getTimezoneOffset();    //get timezone difference in min from UTC*/
 CALLBACK
 - Callback function is a way to pass function as an argument to another function.
 eg. namegreet(name, callback){
-    console.log("Hello", name);
-    callback();
-}
-greet(){
-    console.log("Greetings to you.");
-}
-namegreet("Rahul", greet);
+        console.log("Hello", name);
+        callback();
+    }
+    greet(){
+        console.log("Greetings to you.");
+    }
+    namegreet("Rahul", greet);
 
 SETTIMEOUT
 - setTimeout() schedules a function to run after a delay of specified milliseconds. We specify function to be executed, delay in milliseconds, then any parameters that have to be given to function.
 - Syntax -> setTimeout(function, delay (in ms), param1, param2...);
 eg. console.log("Start");
-setTimeout(()=>{
-    console.log("Task with delay");
-}, 2000);
-console.log("End");
+    setTimeout(()=>{
+        console.log("Task with delay");
+    }, 2000);
+    console.log("End");
 //prints Start, then End, then Task with delay
 
 SETINTERVAL
 - setInterval() executes any function repeatedly at regular intervals.
 - Syntax -> setInterval(callback, interval (in ms));
 eg. var count=1;
-setInterval(()=>{
-    console.log(count);
-    ++count;
-}, 1000);
+    setInterval(()=>{
+        console.log(count);
+        ++count;
+    }, 1000);
 //Prints incremented numbers every second
 
 CLEARINTERVAL
 - clearInterval() is used to stop setInterval()
+eg. var timer = setInterval(()=>{
+        console.log("Hello");
+    }, 1000);
+    setTimeout(()=>{
+        clearInterval(timer);
+    }, 5000);
+eg2. var count=1;
+    var timer = setInterval(()=>{
+        console.log("Hello");
+        if(count>=5){
+            clearInterval(timer);
+        }
+        ++count;
+    }, 1000);
+- In eg2, count will still increase after clearInterval() is done. Timer will complete its current iteration and then be stopped.
+
+PROMISE CLASS
+- It is an alternative to callback. It uses a callback function of form callback(resolve, reject)
+- resolve() -> function that calls then(callback) method (success case)
+- reject() -> function that calls catch(callback) method (failure case)
+- Resolve function must always be called. Reject function doesn't need to be. (it's like if and else)
+- Resolve and reject also contain within them the parameters that will be passed to then and catch respectively.
+- In then and catch, we refer to these parameters as message/value and error respectively (just a convention)
+eg. var p=new Promise((resolve,reject)=>{
+        a=2;
+        if(a==2){
+            resolve("a is 2.");
+        }
+        else{
+            reject("a is not 2.");
+        }
+    })
+    p.then(message=>{
+        console.log("Success:", message)})
+    .catch(error=>{
+        console.log("Failure:", error)})
+- p.then().then().catch(); -> In case of resolve, it will execute first then, return value of first then as parameter into second then. In case of reject, only catch will run.
+- Promise.all([p1,p2,p3]).then(messages=>{console.log(messages)}) -> then executes when all processes are complete. messages contain array of messages of all promises in order.
+- Promise.race(p1,p2,p3).then(message=>{console.log(message)}) -> then executes when one process is complete. message contains that of complete process.
+
+WAIT
+- Returns a Promise object.
+- Syntax -> wait(timeout);
+eg. function wait(a){
+        return new Promise((resolve, reject)=>{
+            setTimeout(()=>{
+                resolve(a);
+            }, a*1000);
+        }
+    }
+    wait(2).then(message=>{
+        console.log("Waited for", message, "seconds.")
+    })
+- The wait function isn't an inbuilt function. It's just the commonly used term for a function that just waits a certain time. (Kinda like sleep in shell)
+
+TIME
+- Another function like wait. Not built in but we can make it.
+- Returns current time.
+eg function time(){
+    var d=new Date();
+    var h=d.getHours();
+    var m=d.getMinutes();
+    var s=d.getSeconds();
+    if(h<10){
+        h="0"+h;
+    }
+    if(m<10){
+        m="0"+m;
+    }
+    if(s<10){
+        s="0"+s;
+    }
+    return h+":"+m+":"+s;
+}
+    
+ASYNC & AWAIT
+- Async is used to declare an asynchronous function.
+eg. async function greet(){
+        return "Hello world";
+    }
+    hello().then(message=>{console.log(message));
+- Async make function return a promise. Any value returned is by default considered the 'message' of resolve() function.
+- Await is used inside async functions to make it act like a synchronous function i.e. it make it wait for a promise to be resolved before moving on.
+eg. async function greet(){
+        var a=await new Promise((resolve, reject)=>{
+            good=true;
+            if(good){
+                resolve("Hello good person!");
+            }
+            else{
+                reject("No hellos for bad people!");
+            }
+        });
+        console.log(a);
+    }
+    greet();
+- We can use try-catch in order to handle the reject case, else it will throw error as greet's await will never be fulfilled. (displays 'Uncaught (in promise) <error message in reject()>')
+eg. async function greet(){
+        try{
+            var a=await new Promise((resolve, reject)=>{
+                good=true;
+                if(good){
+                    resolve("Hello good person!");
+                }
+                else{
+                    reject("No hellos for bad people!");
+                }
+            });
+            console.log(a);
+        }
+        catch(error){
+            console.log(error);
+        }
+    }
+    greet();
+*/
+
+/*ADDITIONAL IMPORTANT TOPICS (suggested by ChatGPT for me to include)
+
+PROTOTYPE & INHERITANCE
+- prototype is a keyword used to add variables or methods into a class.
+eg. class Person{
+        constructor(name="", age=0){
+            this.name=name;
+            this.age=age;
+        }
+    }
+    Person.prototype.species="Human";
+    Person.prototype.greet=function(){console.log("Hello", this.name, "you are a", this.species);};
+    var alice=new Person("Alice", 20);
+    alice.species="Fairy";
+    alice.greet();  //Hello Alice you are a Fairy
+- a._proto_ gives prototype of a.
+eg. in above eg., alice._proto_=Person.prototype;
+- Prototype searching is when js looks up prototype chain of a class when it can't find a variable/method in the class definition.
+
+CLOSURES
+- It is when a function accesses a variable declared outside its scope.
+eg. function outer(){
+        let a=0;
+        return function inner(){
+            ++a;
+            console.log("Count:", a);
+        }
+    }
+    let counter=outer();
+    counter();  //Count: 1
+    counter();  //Count: 2
+    counter();  //Count: 3
+(In above program, outer is executed once and it returns inner function to counter. Every time counter is called, value of a is increased and printed.)
+- This also helps in creating private variables. eg. a in above example cannot be accessed globally.
+
+DESTRUCTURING
+- It is an alternative method of assigning variables.
+eg1. let a=[1,2,3,4];
+let [a1,a2]=a;  //a1=1, a2=2
+let [a1,,a3]=a; //a1=1, a3=3
+let [a1,...a2]=a;   //a1=1, a2=[2,3,4]
+eg2. let a={name:"Rahul", age=20, address:{city:"Delhi"}};
+let {name,age}=a;    //name="Rahul", age=20
+let {name:b, age:c}=a;  //b="Rahul", c=20
+let {name:b, address:{c}}=a; //b="Rahul", c="Delhi"
+let {name:b, age:c=0}   //b="Rahul", c=20 (c=0 if, say, age wasn't a key in object a)
+
+SPREAD AND REST
+- Both spread and rest are written as '...', but have different uses.
+- Spread is used to unpack values of an array/object
+eg1. let a=[1,2,3,4];
+let b=[...a,5,6];   //b=[1,2,3,4,5,6]
+let c=[a,5,6]       //c=[[1,2,3,4],5,6]
+eg2. let a={name:"Rahul", age=20};
+let b={...a, city:"Delhi"}; //b={name:"Rahul", age:20, city:"Delhi"}
+let c={a, city:"Delhi"};    //c={{name:"Rahul", age:20}, city:"Delhi"}
+- Rest is used to pack values into an array
+eg1. function summ(...a){   //a is an array of any no. of arguments
+        return a.reduce((total, num)=> total+num, 0)
+    }
+eg2. let a=[1,2,3,4];
+let [b,...c]=a;     //b=1, c=[2,3,4]
+
+OPTIONAL CHAINING
+- Using ? in chains to avoid errors. If it finds the next part of chain, it accesses it, else returns 'undefined'.
+eg1. let a={name:"Rahul", age:20, greet:()=>"Hello"};
+console.log(a.name);    //"Rahul"
+console.log(a.city);    //Gives error
+console.log(a?.city);   //Undefined
+console.log(a.greet?());    //"Hello"
+console.log(a.hey());   //Gives error
+console.log(a.hey?());  //Undefined
+console.log(a?.hey());  //Undefined
+eg2. let a=[1,2,3,4];
+console.log(a?.[0]);    //1
+console.log(a?.[5]);    //Undefined
+console.log(a[5]); //Undefined (throws error if a=null/undefined)
+
+MODULES
+- Module is any js file that exports or imports stuff. It helps to have smaller files and more structured js code.
+eg. Creating module that exports - fname.js:
+export const pi=3.14159;
+export function add(a,b){
+    return a+b;
+}
+export function sub(a,b){
+    return a-b;
+}
+export function mult(a,b){
+    return a*b;
+}
+export function div(a,b){
+    return a/b;
+}
+Creating module that imports - script.js:
+import {add, sum} from "./fname.js";
+console.log(pi);  //3.14159
+console.log(add(2,3));  //5
+- Other ways to export and import:
+eg. export default const pi=3.14159;    //No need to enclose pi in {} while importing. There can only be one default export.
+eg. import pi from "./fname.js"   //Can only be done for default export
+eg. import pi, {add, sum} from "./fname.js" //Exporting both default and normal exports. Default should always come before normal exports.
+eg. import * as alias from "fname.js"   //Exports can be accessed as alias.<export> eg. alias.pi=3.14159
+eg. import("./fname.js");   //Asynchronous way of importing. Returns a promise. Must use await or .then()
+eg. <script type="module" src="fname.js"></script>  //in html. Tells browser that the js file is a module
+eg. <script type="nomodule" src="smth.js"></script> //in html again. Used for backward compatibility as old browsers don't support modules.
+
+EVENT LOOP & MICROTASK QUEUE
+- In js, tasks are run in different queues:
+1) Call stack - synchronous code
+2) Web APIs - asynchronous code
+3) Callback queue - Timers (setTimeout, setInterval), eventListeners (click, keyup) etc.
+4) Microtask queue - Promises, callbacks, async/await
+- Event loop manages all these. Priority -> call stack > microtask > callback
+- Web API doesn't have any priority of its own.
+
+FETCH API & AJAX
+- AJAX is kinda outdated so not recommended to use. And Im too lazy to understand what it does.
+- Fetching API is the modern way of making network requests. It uses fetch() which returns a promise.
+eg. fetch("https://...")
+.then(response=>response.json())
+.then(data=>console.log(data))
+.catch(error=>console.log(error));
+- Only links with origin policy CORS (Cross-Origin Resource Sharing) can be fetched. Some links require API keys, some block fetch altogether, local files cannot be accessed (type "file://...") etc.
+
+AXIOS
+- Another way of making network requests.
+eg1. axios.get("https://...")
+.then(response=>console.log(response.data))
+.catch(error=>console.log(error));
+eg2. axios.post("https://jsonplaceholder...", {
+    title: "Hello",
+    body: "This is the main text.",
+    userId: 1
+})
+.then(response=>console.log(response.data))
+.catch(error=>console.log(error));
+(In eg2, jsonplaceholder links expect an object having keys title, body, userId. So that's what we used.)
+*/
